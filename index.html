@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Febby Anggun Manis Cute ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto; 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            touch-action: manipulation;
+        }
+
+        .font-handwriting { font-family: 'Dancing Script', cursive; }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+        }
+        .heart-beat { animation: heartbeat 2s infinite; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 40px 0 rgba(255, 105, 180, 0.2);
+        }
+
+        .hidden-opacity { opacity: 0; pointer-events: none; transition: opacity 1s ease; display: none; }
+        .visible-opacity { opacity: 1; pointer-events: auto; transition: opacity 1s ease; display: flex; }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+        .pulse-alert {
+            animation: pulse-red 2s infinite;
+            border: 2px solid #ef4444 !important;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(to right, #ec4899, #d946ef, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Container Video - Disesuaikan agar pas */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            /* Menghapus padding-bottom fix agar mengikuti ukuran asli video jika memungkinkan, 
+               atau kita set max-height agar tidak terlalu panjang */
+            border-radius: 20px;
+            background-color: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            border: 4px solid white;
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+<body class="min-h-screen w-full relative">
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://feeldreams.github.io/audio/thousand.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="musicToggle" onclick="toggleMusic()" class="fixed top-4 left-4 z-[60] bg-white/90 p-3 rounded-full shadow-lg text-pink-600 text-sm hover:bg-white transition flex items-center gap-2 border border-pink-200">
+        <span id="musicIcon">🔇</span> 
+        <span id="musicText" class="hidden md:inline">Putar Musik</span>
+    </button>
+
+    <!-- LAYER 1: Layar Pembuka -->
+    <div id="openingScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-pink-50 transition-all duration-1000 h-screen w-screen">
+        <div class="text-center p-8 bg-white/60 backdrop-blur-md rounded-3xl shadow-2xl border border-white/60 max-w-sm mx-4 transform transition-all hover:scale-105">
+            <div class="text-7xl mb-6 heart-beat drop-shadow-lg">💌</div>
+            <h1 class="text-2xl font-bold text-pink-600 mb-2">Halo, Manis!</h1>
+            <p class="text-gray-600 mb-8 text-sm px-2 font-medium">Ada kejutan spesial buat kamu.<br>Siap-siap ya...</p>
+            <button onclick="startExperience()" class="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl transform hover:scale-110 transition duration-300 ring-4 ring-pink-100 active:scale-95">
+                Buka Sekarang 🌹
+            </button>
+        </div>
+    </div>
+
+    <!-- LAYER 2: Konten Utama -->
+    <div id="mainContent" class="hidden-opacity w-full min-h-screen flex-col items-center justify-start py-12 px-4 gap-8">
+        
+        <!-- KARTU UCAPAN -->
+        <div class="glass-card max-w-md w-full rounded-[2rem] p-6 md:p-8 text-center relative transform transition-all duration-500 mt-4">
+            <div class="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                <div class="bg-white p-3 rounded-full shadow-lg">
+                    <span class="text-5xl animate-pulse">💖</span>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <h2 class="text-3xl font-handwriting text-pink-500 mb-2 font-bold drop-shadow-sm transform -rotate-2">
+                    Happy Valentine!
+                </h2>
+                <h1 class="text-2xl md:text-3xl font-black mb-6 tracking-wide text-gradient uppercase leading-tight">
+                    FEBBY ANGGUN<br>MANIS CUTE
+                </h1>
+            </div>
+
+            <div class="h-[120px] flex items-center justify-center px-4 mb-6 bg-pink-50/50 rounded-2xl border border-pink-100">
+                <p id="typingText" class="text-gray-700 font-semibold text-lg leading-relaxed font-handwriting"></p>
+            </div>
+
+            <div class="flex gap-3 w-full justify-center mt-2">
+                <button onclick="giveItem('cokelat')" class="w-1/2 bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-800 hover:to-amber-700 text-white py-3 rounded-2xl transition shadow-lg flex justify-center items-center gap-2 transform active:scale-95 border-b-4 border-amber-900">
+                    <span class="text-2xl">🍫</span> <span class="font-bold">Cokelat</span>
+                </button>
+                <button onclick="giveItem('bunga')" class="w-1/2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white py-3 rounded-2xl transition shadow-lg flex justify-center items-center gap-2 transform active:scale-95 border-b-4 border-pink-700">
+                    <span class="text-2xl">🌹</span> <span class="font-bold">Bunga</span>
+                </button>
+            </div>
+            <div id="responseMsg" class="mt-4 text-sm font-bold text-pink-600 h-6 transition-opacity duration-300 opacity-0"></div>
+        </div>
+
+        <!-- VIDEO SECTION LOKAL -->
+        <div class="w-full max-w-xs md:max-w-sm mx-auto">
+            <h3 class="text-center text-pink-600 font-bold mb-3 font-handwriting text-2xl">Tonton ini ya cantik... 🎥</h3>
+            
+            <div class="video-wrapper">
+                <!-- VIDEO TAG LANGSUNG KE FILE -->
+                <!-- Pastikan nama file video SAMA PERSIS dengan src di bawah -->
+                <video controls autoplay loop playsinline>
+                    <source src="Valentine's Day 2026_20260215_003936_0000.mp4" type="video/mp4">
+                    Browser kamu tidak mendukung pemutar video ini.
+                </video>
+            </div>
+        </div>
+
+        <footer class="text-pink-600/80 text-xs font-bold glass-card px-6 py-3 rounded-full shadow-sm mt-4 mb-8">
+            Dibuat dengan ❤️ Spesial untuk Febby
+        </footer>
+    </div>
+
+    <script>
+        const recipientName = "Febby Anggun Manis Cute"; 
+        const messages = [
+            `Hai, Febby Anggun yang Manis & Cute...`, 
+            "Selamat Hari Valentine! 💖",
+            "Terima kasih sudah menjadi",
+            "wanita yang paling spesial.",
+            "Dunia jadi lebih indah",
+            "karena pesona manismu. 😊",
+            "Happy Valentine's Day! 🌹"
+        ];
+        
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+
+        function fireConfetti() {
+            var count = 200;
+            var defaults = { origin: { y: 0.7 } };
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(count * particleRatio) }));
+            }
+            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#ff0000', '#ff69b4'] });
+            fire(0.2, { spread: 60, colors: ['#00ff00', '#0000ff'] });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        function flowerConfetti() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#ff69b4', '#ff1493', '#db7093'], shapes: ['circle'] });
+        }
+
+        function startExperience() {
+            bgMusic.volume = 1.0;
+            const playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => updateMusicUI(true)).catch(error => { updateMusicUI(false); musicBtn.classList.add('pulse-alert'); });
+            }
+            const screen = document.getElementById('openingScreen');
+            screen.style.opacity = '0';
+            screen.style.pointerEvents = 'none';
+            setTimeout(() => {
+                screen.style.display = 'none';
+                document.getElementById('mainContent').classList.remove('hidden-opacity');
+                document.getElementById('mainContent').classList.add('visible-opacity');
+                fireConfetti();
+                setTimeout(fireConfetti, 500); 
+                typeWriter();
+            }, 800);
+        }
+
+        function toggleMusic() {
+            if (bgMusic.paused) { bgMusic.play(); updateMusicUI(true); musicBtn.classList.remove('pulse-alert'); } 
+            else { bgMusic.pause(); updateMusicUI(false); }
+        }
+
+        function updateMusicUI(isPlaying) {
+            if (isPlaying) { musicIcon.innerText = "🎵"; musicBtn.classList.add('bg-pink-100'); musicBtn.classList.remove('bg-white/90', 'pulse-alert'); } 
+            else { musicIcon.innerText = "🔇"; musicBtn.classList.remove('bg-pink-100'); musicBtn.classList.add('bg-white/90'); }
+        }
+
+        let msgIndex = 0, charIndex = 0, isDeleting = false;
+        const typingElement = document.getElementById('typingText');
+
+        function typeWriter() {
+            if (msgIndex >= messages.length) return;
+            const currentMsg = messages[msgIndex];
+            const speed = isDeleting ? 30 : 80;
+            
+            if (isDeleting) { typingElement.innerHTML = currentMsg.substring(0, charIndex - 1); charIndex--; } 
+            else { typingElement.innerHTML = currentMsg.substring(0, charIndex + 1); charIndex++; }
+
+            let nextSpeed = speed;
+            if (!isDeleting && charIndex === currentMsg.length) {
+                if (msgIndex === messages.length - 1) return; 
+                isDeleting = true; nextSpeed = 1500;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false; msgIndex++; nextSpeed = 400;
+            }
+            setTimeout(typeWriter, nextSpeed);
+        }
+
+        function giveItem(item) {
+            const responseMsg = document.getElementById('responseMsg');
+            if (navigator.vibrate) navigator.vibrate(200);
+            if(item === 'cokelat') {
+                responseMsg.innerText = "Manis banget, makasih ya! 🍫😋";
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#8B4513', '#D2691E', '#FFD700'] });
+            } else {
+                responseMsg.innerText = "Waaaah bunganya cantik! 🌺🥺";
+                flowerConfetti();
+            }
+            responseMsg.style.opacity = '1';
+            setTimeout(() => responseMsg.style.opacity = '0', 3000);
+        }
+    </script>
+</body>
+</html>
+
+
