@@ -54,12 +54,9 @@
             -webkit-text-fill-color: transparent;
         }
         
-        /* Container Video - Disesuaikan agar pas */
         .video-wrapper {
             position: relative;
             width: 100%;
-            /* Menghapus padding-bottom fix agar mengikuti ukuran asli video jika memungkinkan, 
-               atau kita set max-height agar tidak terlalu panjang */
             border-radius: 20px;
             background-color: #000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -73,6 +70,72 @@
             display: block;
             border-radius: 16px;
         }
+
+        /* --- STYLE BARU UNTUK GALLERY MARQUEE --- */
+        .marquee-container {
+            width: 100vw; /* Full width layar */
+            margin-left: -50vw; /* Trik agar full width meski parent ada padding */
+            left: 50%;
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.3); /* Sedikit background agar foto standout */
+            backdrop-filter: blur(5px);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 15px; /* Jarak antar foto */
+            width: max-content;
+        }
+
+        /* Foto Setup */
+        .marquee-item {
+            height: 160px; /* Tinggi Konsisten Mobile */
+            width: auto;   /* Lebar otomatis */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        @media (min-width: 768px) {
+            .marquee-item { height: 200px; } /* Tinggi Konsisten Desktop */
+        }
+
+        .marquee-item:hover {
+            transform: scale(1.05); /* Efek zoom dikit pas hover */
+            z-index: 10;
+        }
+
+        /* Animasi Jalan */
+        @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Geser setengah panjang track (karena diduplikasi) */
+        }
+
+        @keyframes scrollRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Kecepatan Animasi */
+        .animate-scroll-left {
+            animation: scrollLeft 40s linear infinite; /* 40s agar smooth tidak pusing */
+        }
+        
+        .animate-scroll-right {
+            animation: scrollRight 40s linear infinite;
+        }
+        
+        /* Pause pas di hover mouse (opsional, biar enak dilihat) */
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
     </style>
 </head>
 <body class="min-h-screen w-full relative">
@@ -86,7 +149,6 @@
         <span id="musicText" class="hidden md:inline">Play</span>
     </button>
 
-    <!-- LAYER 1: Layar Pembuka -->
     <div id="openingScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-pink-50 transition-all duration-1000 h-screen w-screen">
         <div class="text-center p-8 bg-white/60 backdrop-blur-md rounded-3xl shadow-2xl border border-white/60 max-w-sm mx-4 transform transition-all hover:scale-105">
             <div class="text-7xl mb-6 heart-beat drop-shadow-lg">💌</div>
@@ -98,10 +160,8 @@
         </div>
     </div>
 
-    <!-- LAYER 2: Konten Utama -->
     <div id="mainContent" class="hidden-opacity w-full min-h-screen flex-col items-center justify-start py-12 px-4 gap-8">
         
-        <!-- KARTU UCAPAN -->
         <div class="glass-card max-w-md w-full rounded-[2rem] p-6 md:p-8 text-center relative transform transition-all duration-500 mt-4">
             <div class="absolute -top-6 left-1/2 transform -translate-x-1/2">
                 <div class="bg-white p-3 rounded-full shadow-lg">
@@ -133,13 +193,10 @@
             <div id="responseMsg" class="mt-4 text-sm font-bold text-pink-600 h-6 transition-opacity duration-300 opacity-0"></div>
         </div>
 
-        <!-- VIDEO SECTION LOKAL -->
-        <div class="w-full max-w-xs md:max-w-sm mx-auto">
+        <div class="w-full max-w-xs md:max-w-sm mx-auto z-10">
             <h3 class="text-center text-pink-600 font-bold mb-3 font-handwriting text-2xl">Tonton ini ya cantik... 🎥</h3>
             
             <div class="video-wrapper">
-                <!-- VIDEO TAG LANGSUNG KE FILE -->
-                <!-- Pastikan nama file video SAMA PERSIS dengan src di bawah -->
                 <video controls loop playsinline>
                     <source src="Valentine's Day 2026_20260215_003936_0000.mp4" type="video/mp4">
                     Browser kamu tidak mendukung pemutar video ini.
@@ -147,6 +204,38 @@
             </div>
         </div>
 
+        <div class="w-full mt-4 mb-4">
+            <h3 class="text-center text-pink-600 font-bold mb-4 font-handwriting text-2xl">Kenangan Kita 📸</h3>
+            
+            <div class="marquee-container">
+                <div class="marquee-track animate-scroll-left">
+                    <img src="foto1.jpg" class="marquee-item" alt="Foto 1"><img src="foto2.jpg" class="marquee-item" alt="Foto 2"><img src="foto3.jpg" class="marquee-item" alt="Foto 3">
+                    <img src="foto1.jpg" class="marquee-item" alt="Foto 1"><img src="foto2.jpg" class="marquee-item" alt="Foto 2"><img src="foto3.jpg" class="marquee-item" alt="Foto 3">
+                    <img src="foto1.jpg" class="marquee-item" alt="Foto 1"><img src="foto2.jpg" class="marquee-item" alt="Foto 2"><img src="foto3.jpg" class="marquee-item" alt="Foto 3">
+                    <img src="foto1.jpg" class="marquee-item" alt="Foto 1"><img src="foto2.jpg" class="marquee-item" alt="Foto 2"><img src="foto3.jpg" class="marquee-item" alt="Foto 3">
+                    <img src="foto1.jpg" class="marquee-item" alt="Foto 1"><img src="foto2.jpg" class="marquee-item" alt="Foto 2"><img src="foto3.jpg" class="marquee-item" alt="Foto 3">
+                    <img src="foto1.jpg" class="marquee-item" alt="Foto 1"><img src="foto2.jpg" class="marquee-item" alt="Foto 2"><img src="foto3.jpg" class="marquee-item" alt="Foto 3">
+                </div>
+
+                <div class="marquee-track animate-scroll-right">
+                    <img src="foto4.jpg" class="marquee-item" alt="Foto 4"><img src="foto5.jpg" class="marquee-item" alt="Foto 5"><img src="foto6.jpg" class="marquee-item" alt="Foto 6">
+                    <img src="foto4.jpg" class="marquee-item" alt="Foto 4"><img src="foto5.jpg" class="marquee-item" alt="Foto 5"><img src="foto6.jpg" class="marquee-item" alt="Foto 6">
+                    <img src="foto4.jpg" class="marquee-item" alt="Foto 4"><img src="foto5.jpg" class="marquee-item" alt="Foto 5"><img src="foto6.jpg" class="marquee-item" alt="Foto 6">
+                    <img src="foto4.jpg" class="marquee-item" alt="Foto 4"><img src="foto5.jpg" class="marquee-item" alt="Foto 5"><img src="foto6.jpg" class="marquee-item" alt="Foto 6">
+                    <img src="foto4.jpg" class="marquee-item" alt="Foto 4"><img src="foto5.jpg" class="marquee-item" alt="Foto 5"><img src="foto6.jpg" class="marquee-item" alt="Foto 6">
+                    <img src="foto4.jpg" class="marquee-item" alt="Foto 4"><img src="foto5.jpg" class="marquee-item" alt="Foto 5"><img src="foto6.jpg" class="marquee-item" alt="Foto 6">
+                </div>
+
+                <div class="marquee-track animate-scroll-left">
+                    <img src="foto7.jpg" class="marquee-item" alt="Foto 7"><img src="foto8.jpg" class="marquee-item" alt="Foto 8"><img src="foto9.jpg" class="marquee-item" alt="Foto 9">
+                    <img src="foto7.jpg" class="marquee-item" alt="Foto 7"><img src="foto8.jpg" class="marquee-item" alt="Foto 8"><img src="foto9.jpg" class="marquee-item" alt="Foto 9">
+                    <img src="foto7.jpg" class="marquee-item" alt="Foto 7"><img src="foto8.jpg" class="marquee-item" alt="Foto 8"><img src="foto9.jpg" class="marquee-item" alt="Foto 9">
+                    <img src="foto7.jpg" class="marquee-item" alt="Foto 7"><img src="foto8.jpg" class="marquee-item" alt="Foto 8"><img src="foto9.jpg" class="marquee-item" alt="Foto 9">
+                    <img src="foto7.jpg" class="marquee-item" alt="Foto 7"><img src="foto8.jpg" class="marquee-item" alt="Foto 8"><img src="foto9.jpg" class="marquee-item" alt="Foto 9">
+                    <img src="foto7.jpg" class="marquee-item" alt="Foto 7"><img src="foto8.jpg" class="marquee-item" alt="Foto 8"><img src="foto9.jpg" class="marquee-item" alt="Foto 9">
+                </div>
+            </div>
+        </div>
         <footer class="text-pink-600/80 text-xs font-bold glass-card px-6 py-3 rounded-full shadow-sm mt-4 mb-8">
             Dibuat dengan ❤️ Spesial untuk Febby
         </footer>
@@ -252,5 +341,3 @@
     </script>
 </body>
 </html>
-
-
